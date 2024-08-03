@@ -55,7 +55,7 @@ struct fifteenDaysWeather {
       Row() {
 
         Text('15日天气趋势预报')
-          .fontSize(40)
+          .fontSize(30)
           .fontColor('#686868')
           .margin({ left: 15 })
 
