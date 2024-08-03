@@ -57,6 +57,15 @@ struct search {
             params: { mainCode: value }
           })
         })
+      Row() {
+        Text('历史搜索记录')
+          .fontSize(15)
+          .fontColor(Color.Gray)
+      }.width('100%')
+      .height(25)
+      .padding({ top: 5, bottom: 5 })
+      .justifyContent(FlexAlign.Start)
+
       List() {
         ForEach(this.codeSet, (value: string) => {
           ListItem() {
