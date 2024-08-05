@@ -215,7 +215,7 @@ struct routerIndex {
           })
         Text(this.title)
           .fontSize(35)
-        Image($r('app.media.add'))//app.media.ic_more
+        Image($r('app.media.ic_more'))//app.media.ic_more
           .size({ width: 30, height: 30 })
       }
       .height(60)

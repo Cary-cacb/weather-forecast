@@ -195,7 +195,7 @@ struct Index {
               })
             weatherModel.getLocationListByHttp(posnum_3)
               .then(val => {
-                this.title = val.location[0].name
+                this.title = val.location[0].adm1 + val.location[0].adm2 + '市' + val.location[0].name + '区'
                 console.log('实时' + this.title)
               })
 
@@ -234,7 +234,7 @@ struct Index {
             })
           })
         Text(this.title)
-          .fontSize(35)
+          .fontSize(25)
         Image($r('app.media.ic_more'))
           .size({ width: 30, height: 30 })
       }
@@ -969,12 +969,15 @@ struct Index {
         .width('95%')
         .margin({ left: '2.5%', bottom: 50 })
 
-      }.backgroundColor(this.WeatherColor)
+      }
+      .backgroundColor(this.WeatherColor)
       .height('100%')
       .scrollBar(BarState.Off)
 
-    }
+      //
+      // .backgroundImage($r('app.media.rain_background'))
 
+    }
     .width('100%')
   }
 }

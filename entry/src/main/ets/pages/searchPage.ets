@@ -1,5 +1,8 @@
 import MmkvModel from './ViewModel/MMKVModel'
 import router from '@ohos.router'
+import weatherModel from './ViewModel/HTTPModel';
+import { possion } from './entity/Possion';
+import { location } from './entity/location';
 
 
 class routerParams {
@@ -15,11 +18,22 @@ class routerParams {
 struct search {
   aboutToAppear(): void {
     this.codeSet = MmkvModel.getCodes()
+    this.codeSet.forEach((val, index) => {
+      if (val == '') {
+        this.codeSet.splice(index, 1)
+      }
+    })
+    this.codeSet.forEach(val => {
+      this.locationSet.push(JSON.parse(val))
+    })
 
   }
 
   @State codeSet: string[] = []
   @State mainCode: string = (router.getParams() as routerParams).mainCode
+  @State possion: possion | undefined = undefined
+  @State isNull: number = 1
+  @State locationSet: location[] = []
 
   build() {
     Column() {
@@ -34,29 +48,71 @@ struct search {
             })
 
           })
+          .margin({ left: 20 })
+      }.justifyContent(FlexAlign.Start)
+      .width('100%')
+      .margin({ bottom: 5 })
+
+      Row() {
+        Text('城市管理')
+          .fontSize(30).fontWeight(FontWeight.Lighter)
+          .margin({ left: 20 })
       }
+      .justifyContent(FlexAlign.Start)
+      .width('100%')
 
-      Search({ placeholder: '请输入 LocationID ...' })
+      Search({ placeholder: '搜索位置' })
         .searchButton('搜索')
+        .onChange(value => {
+          this.isNull = 1
 
-        .onSubmit((value: string) => {
-          if (value.length == 9) {
-            if (this.codeSet.length < 10) {
-              this.codeSet.unshift(value)
-              MmkvModel.setCodes(this.codeSet)
-
-            } else {
-              this.codeSet.pop()
-              this.codeSet.unshift(value)
-              MmkvModel.setCodes(this.codeSet)
-            }
-          }
-
-          router.replaceUrl({
-            url: 'pages/routerIndex',
-            params: { mainCode: value }
-          })
         })
+        .width('90%')
+        .onSubmit((value: string) => {
+          // if (value.length == 9) {
+          //   if (this.codeSet.length < 10) {
+
+          //
+          //   } else {
+          //     this.codeSet.pop()
+          //     this.codeSet.unshift(value)
+          //     MmkvModel.setCodes(this.codeSet)
+          //   }
+          // }
+          weatherModel.getLocationListByHttp(value)
+            .then(possion => {
+              this.possion = possion
+              this.isNull = 0
+            })
+
+          /*          router.replaceUrl({
+                      url: 'pages/routerIndex',
+                      params: { mainCode: value }
+                    })*/
+        })
+      if (this.isNull != 1) {
+        List() {
+          ForEach(this.possion?.location, (value: location) => {
+            ListItem() {
+              Column() {
+                Text(`${value.adm1} ${value.adm2} ${value.name}`)
+                  .fontSize(20)
+                Divider()
+
+              }.width('100%')
+
+            }.width('98%')
+            .onClick(() => {
+              this.codeSet.unshift(JSON.stringify(value))
+              MmkvModel.setCodes(this.codeSet)
+              router.replaceUrl({
+                url: 'pages/routerIndex',
+                params: { mainCode: value.id }
+              })
+            })
+          })
+        }
+      }
       Row() {
         Text('历史搜索记录')
           .fontSize(15)
@@ -67,10 +123,11 @@ struct search {
       .justifyContent(FlexAlign.Start)
 
       List() {
-        ForEach(this.codeSet, (value: string) => {
+        ForEach(this.locationSet, (value: location, index: number) => {
+
           ListItem() {
             Column() {
-              Text(value)
+              Text(value.name)
                 .fontSize(40)
               Divider()
                 .strokeWidth(2)
@@ -82,17 +139,53 @@ struct search {
               console.log('历史纪录被点击！')
               router.replaceUrl({
                 url: 'pages/routerIndex',
-                params: { mainCode: value }
+                params: { mainCode: value.id }
               })
             })
           }.width('100%')
           .height(60)
+          .swipeAction({
+            end: {
+              builder: () => this.historyItemBuilder(index),
+              actionAreaDistance: 60
+            }
+
+          })
 
         })
       }.width('100%')
-      .height(600)
+      .height(60 * this.codeSet.length)
+
+      Row() {
+        Image($r('app.media.delete'))
+          .size({ width: 15, height: 15 })
+        Text('清空历史记录')
+          .fontSize(15)
+          .fontColor('#707070')
+      }.height(18)
+      .justifyContent(FlexAlign.Center)
+      .onClick(() => {
+        this.codeSet = []
+        MmkvModel.setCodes(this.codeSet)
+      })
     }
     .width('100%')
     .height('100%')
+  }
+
+  @Builder
+  historyItemBuilder(index: number) {
+    Button() {
+      Image($r('app.media.delete_history'))
+        .size({ width: 50, height: 50 })
+
+        .onClick(() => {
+          this.locationSet.splice(index, 1)
+          this.codeSet.splice(index, 1)
+          MmkvModel.setCodes(this.codeSet)
+        })
+    }
+    .backgroundColor(Color.Transparent)
+    .width(80)
   }
 }
