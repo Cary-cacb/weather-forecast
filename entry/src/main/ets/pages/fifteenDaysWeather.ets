@@ -74,7 +74,7 @@ struct fifteenDaysWeather {
                     .fontSize(15)
                     .fontColor(Color.Black)
                   Image($r(`app.media.${item.iconDay}`))
-                    .size({ width: 25, height: 25 })
+                    .size({ width: 35, height: 35 })
 
 
                   Text(item.textDay)
@@ -100,10 +100,6 @@ struct fifteenDaysWeather {
                 weatherModel.get15DayWeatherListByHttp(location)
                   .then(dailyWeather => {
                     this.dailyWeather = dailyWeather
-                    console.log('15日天气' + location)
-                    console.log('15日天气' + dailyWeather)
-                    console.log('15日天气' + this.dailyWeather)
-                    console.log('15日天气' + JSON.stringify(this.dailyWeather))
                     this.maxT_H = Number(this.dailyWeather?.daily[0].tempMax)
                     this.minT_H = Number(this.dailyWeather?.daily[0].tempMax)
                     this.dailyWeather?.daily.forEach(daily => {
@@ -202,7 +198,7 @@ struct fifteenDaysWeather {
               ForEach(this.dailyWeather?.daily, (item: daily, index) => {
                 Column({ space: 10 }) {
                   Image($r(`app.media.${item.iconNight}`))
-                    .size({ width: 25, height: 25 })
+                    .size({ width: 35, height: 35 })
 
 
                   Text(item.textNight)
