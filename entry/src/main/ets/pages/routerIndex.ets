@@ -1,14 +1,16 @@
-import { abilityAccessCtrl, common, Permissions } from '@kit.AbilityKit';
-import { BusinessError } from '@kit.BasicServicesKit';
+import { Permissions } from '@kit.AbilityKit';
 import { geoLocationManager } from '@kit.LocationKit';
-import weatherModel from './ViewModel/HTTPModel'
+import weatherModel from './Model/HTTPModel'
 import { CurrWeather } from './entity/currWeather'
 import { dailyWeather } from './entity/dailyWeather';
-import regExpUtil from './RegExpUtil'
+import regExpUtil from './utils/RegExpUtil'
 import { twentyFourHourWeather } from './entity/twentyFourHourWeather';
 import { hourly } from './entity/hourly';
 import { weatherPoints } from './entity/weatherPoints';
 import router from '@ohos.router';
+import { titleViewModel } from './ViewModel/titleCViewModel';
+import { currWeatherViewModel } from './ViewModel/currWeatherViewModel';
+import { rainBarChartViewModel } from './ViewModel/rainBarChartViewModel';
 
 const permissions: Array<Permissions> = ['ohos.permission.LOCATION', 'ohos.permission.APPROXIMATELY_LOCATION'];
 
@@ -55,23 +57,14 @@ struct routerIndex {
   @State code: string = (router.getParams() as routerParams).mainCode
   @State isRefreshing: boolean = false
   @State refreshingText: string = ''
+  @StorageLink('isNight') isNight: boolean = false
+  @State titleColor: string = 'rgba(0, 0, 0, 1)'
 
   aboutToAppear(): void {
     this.fiveMinutesRainList = []
-
-
     weatherModel.getWeatherPointsByHttp(this.code)
       .then(weatherPoints => {
         this.weatherPoints = weatherPoints
-        // if (Number(this.weatherPoints.daily[0].level) == 1) {
-        //   this.sportStr = '适宜户外运动'
-        // }
-        // if (Number(this.weatherPoints.daily[0].level) == 2) {
-        //   this.sportStr = '较适宜'
-        // }
-        // if (Number(this.weatherPoints.daily[0].level) == 3) {
-        //   this.sportStr = '适宜室内运动'
-        // }
         switch (Number(this.weatherPoints.daily[0].level)) {
           case 1:
             this.sportStr = '适宜户外运动';
@@ -83,10 +76,6 @@ struct routerIndex {
             this.sportStr = '适宜室内运动';
             break
         }
-        console.log('空气 运动' + Number(this.weatherPoints.daily[0].level))
-        console.log('空气 运动' + this.sportStr)
-
-
         switch (Number(this.weatherPoints.daily[2].level)) {
           case 1:
             this.clothStr = '注意防寒';
@@ -110,9 +99,6 @@ struct routerIndex {
             this.clothStr = '适宜短袖';
             break
         }
-        console.log('空气 穿衣' + Number(this.weatherPoints.daily[2].level))
-        console.log('空气 穿衣' + this.clothStr)
-
 
         switch (Number(this.weatherPoints.daily[15].level)) {
           case 1:
@@ -131,13 +117,7 @@ struct routerIndex {
             this.SunStr = '注意防晒';
             break
         }
-        console.log('空气 防晒' + Number(this.weatherPoints.daily[15].level))
-        console.log('空气 防晒' + this.SunStr)
-
-
-      }
-      )
-
+      })
 
     weatherModel.getCurrWeatherListByHttp(this.code)
       .then(currWeather => {
@@ -149,21 +129,21 @@ struct routerIndex {
         } else {
           this.isRain = '两小时内无降雨'
         }
-        if (this.nowWea == '晴') {
-          this.WeatherColor = 'rgb(57,127,213)'
-
-        } else if (this.nowWea == '多云') {
-          this.WeatherColor = 'rgb(127,154,201)'
-        } else if (this.nowWea == '阴') {
-          this.WeatherColor = 'rgb(141,161,185)'
+        if (this.isNight == true) {
+          this.WeatherColor = 'rgba(0, 6, 41, 0.95)'
+          this.titleColor = 'rgba(255, 255, 255, 1)'
         } else {
-          this.WeatherColor = '#4c545c'
+          this.titleColor = 'rgba(0, 0, 0, 1)'
+          if (this.nowWea == '晴') {
+            this.WeatherColor = 'rgb(57,127,213)'
+          } else if (this.nowWea == '多云') {
+            this.WeatherColor = 'rgb(127,154,201)'
+          } else if (this.nowWea == '阴') {
+            this.WeatherColor = 'rgb(141,161,185)'
+          } else {
+            this.WeatherColor = '#4c545c'
+          }
         }
-        console.log('现在背景色' + this.WeatherColor)
-        console.log('现在天气' + this.nowWea)
-
-        console.log(`实时${this.currWeather.now.temp}`)
-        console.log(`实时${this.currWeather.now.temp}`)
 
         weatherModel.getAirQualityListByHttp(this.code)
           .then(val => {
@@ -181,45 +161,44 @@ struct routerIndex {
             } else {
               this.clear = '严重污染'
             }
-            console.log('质量' + typeof (this.airQuality))
           })
         weatherModel.getLocationListByHttp(this.code)
           .then(val => {
             this.title = val.location[0].name
-            console.log('实时' + this.title)
           })
-
       })
     weatherModel.get3DayWeatherListByHttp(this.code)
       .then(nwe3DWeather => {
         this.new3DWeather = nwe3DWeather
         this.maxTem = this.new3DWeather.daily[0].tempMax
         this.minTem = this.new3DWeather.daily[0].tempMin
-        console.log(`我${this.new3DWeather.daily[0].sunrise}`)
-
       })
-
-
   }
 
   build() {
     Refresh({ refreshing: $$this.isRefreshing, builder: this.refreshItemBuilder }) {
       Column() {
-
         //标题栏
         Row() {
           Image($r('app.media.add'))
             .size({ width: 30, height: 30 })
             .onClick(() => {
-              router.replaceUrl({
+              router.pushUrl({
                 url: 'pages/searchPage',
                 params: { mainCode: this.code }
               })
             })
           Text(this.title)
             .fontSize(35)
+            .fontColor(this.titleColor)
           Image($r('app.media.ic_more'))//app.media.ic_more
             .size({ width: 30, height: 30 })
+            .onClick(() => {
+              router.pushUrl({
+                url: 'pages/settingPage'
+              })
+            })
+
         }
         .height(60)
         .width('100%')
@@ -229,7 +208,6 @@ struct routerIndex {
         .backgroundColor(this.WeatherColor)
 
         List() {
-
           //实时天气
           ListItem() {
             Column() {
@@ -352,8 +330,6 @@ struct routerIndex {
                           })
                         })
                     })
-
-
                 })
 
                 Row() {
@@ -371,7 +347,6 @@ struct routerIndex {
                 .justifyContent(FlexAlign.SpaceAround)
                 .alignItems(VerticalAlign.Top)
               }
-
               .backgroundColor('rgba(226, 226, 226, 0.2)') //
               .borderRadius(20)
               .height(200)
@@ -391,7 +366,6 @@ struct routerIndex {
             }
           }
 
-
           //三日天气&15日天气
           ListItem() {
             Column() {
@@ -399,6 +373,7 @@ struct routerIndex {
                 Image($r(`app.media.${this.new3DWeather?.daily[0].iconDay}`))
                   .size({ width: 35, height: 35 })
                   .margin({ right: 15 })
+
                 Text('今天')
                   .fontSize(20)
                   .fontColor(Color.White)
@@ -422,14 +397,13 @@ struct routerIndex {
                   .borderRadius(10)
                   .textAlign(TextAlign.Center)
                   .margin({ right: 40 })
+
                 Text(`${this.new3DWeather?.daily[0].tempMax}°/${this.new3DWeather?.daily[0].tempMin}°`)
                   .fontSize(20)
                   .fontColor(Color.White)
-
               }.width('97%')
               .height(50)
               .padding({ bottom: 30 })
-
 
               Row() {
                 Image($r(`app.media.${this.new3DWeather?.daily[1].iconDay}`))
@@ -451,7 +425,6 @@ struct routerIndex {
                     .fontColor(Color.White)
                     .width(110)
                 }
-                // .backgroundColor(Color.Black)
                 Text('优')
                   .fontSize(15)
                   .fontColor(Color.White)
@@ -460,6 +433,7 @@ struct routerIndex {
                   .borderRadius(10)
                   .textAlign(TextAlign.Center)
                   .margin({ right: 40 })
+
                 Text(`${this.new3DWeather?.daily[1].tempMax}°/${this.new3DWeather?.daily[1].tempMin}°`)
                   .fontSize(20)
                   .fontColor(Color.White)
@@ -467,11 +441,11 @@ struct routerIndex {
               .height(50)
               .padding({ bottom: 30 })
 
-
               Row() {
                 Image($r(`app.media.${this.new3DWeather?.daily[2].iconDay}`))
                   .size({ width: 35, height: 35 })
                   .margin({ right: 15 })
+
                 Text('后天')
                   .fontSize(20)
                   .fontColor(Color.White)
@@ -495,13 +469,13 @@ struct routerIndex {
                   .borderRadius(10)
                   .textAlign(TextAlign.Center)
                   .margin({ right: 40 })
+
                 Text(`${this.new3DWeather?.daily[2].tempMax}°/${this.new3DWeather?.daily[2].tempMin}°`)
                   .fontSize(20)
                   .fontColor(Color.White)
               }.width('97%')
               .height(50)
               .padding({ bottom: 10 })
-
 
               Row() {
                 Button() {
@@ -522,14 +496,12 @@ struct routerIndex {
                 })
               }.width('97%')
               .height(50)
-
               .justifyContent(FlexAlign.Center)
             }
             .justifyContent(FlexAlign.Center)
             .alignItems(HorizontalAlign.Center)
             .width('100%')
             .height('100%')
-
           }
           .height(250)
           .width('95%')
@@ -545,6 +517,7 @@ struct routerIndex {
                   .size({ width: 20, height: 20 })
                   .fillColor('rgba(198, 198, 198, 0.8)')
                   .margin({ left: 12 })
+
                 Text('24小时预报')
                   .fontSize(20)
                   .fontColor('rgba(198, 198, 198, 0.8)')
@@ -557,12 +530,9 @@ struct routerIndex {
                 Column() {
                   Canvas(this.context_2)
                     .height(90)
-
-                    .width(1500)
+                    .width(1440)
                     .onReady(() => {
-
                       let code = (router.getParams() as routerParams).mainCode
-
                       weatherModel.get24HourWeatherListByHttp(code)
                         .then((wl) => {
                           this.twentyFourHourWeatherList = wl
@@ -609,10 +579,10 @@ struct routerIndex {
                         Image($r(`app.media.${item.icon}`))
                           .size({ width: 35, height: 35 })
 
-
                         Text(`${item.windScale[2]}级`)
                           .fontSize(15)
                           .fontColor(Color.White)
+
                         Text('优')
                           .fontSize(17)
                           .fontColor(Color.White)
@@ -621,33 +591,24 @@ struct routerIndex {
                           .borderRadius(5)
                           .textAlign(TextAlign.Center)
 
-
                         Text((item.fxTime.split('T')[1]).split('+')[0])
                           .fontSize(15)
                           .fontColor(Color.White)
-
-
                       }.position({ x: 10 + 60 * index })
                       .justifyContent(FlexAlign.Center)
-
                     })
-
                   }
                   .margin({ top: 10 })
                   .height(125)
-
                 }.height(235)
                 .alignItems(HorizontalAlign.Start)
                 .justifyContent(FlexAlign.Start)
-
               }.height(235)
               .scrollable(ScrollDirection.Horizontal)
               .scrollBarColor(Color.Transparent)
-
             }.width('100%')
             .height('100% ')
             .justifyContent(FlexAlign.Start)
-
           }
           .height(270)
           .width('95%')
@@ -664,6 +625,7 @@ struct routerIndex {
                   Text(this.currWeather?.now.windDir)
                     .fontColor(Color.White)
                     .fontSize(40)
+
                   Text(`${this.currWeather?.now.windScale}级`)
                     .fontColor(Color.White)
                     .fontSize(35)
@@ -681,6 +643,7 @@ struct routerIndex {
                       .fontColor(Color.White)
                       .fontSize(30)
                       .fontWeight(FontWeight.Bold)
+
                     Text('日出')
                       .fontColor(Color.White)
                       .fontSize(25)
@@ -692,12 +655,12 @@ struct routerIndex {
                   .alignItems(VerticalAlign.Bottom)
                   .margin({ bottom: 15 })
 
-
                   Row() {
                     Text(this.new3DWeather?.daily[0].sunset)
                       .fontColor(Color.White)
                       .fontSize(30)
                       .fontWeight(FontWeight.Bold)
+
                     Text('日落')
                       .fontColor(Color.White)
                       .fontSize(25)
@@ -706,15 +669,12 @@ struct routerIndex {
                   .width('100%')
                   .justifyContent(FlexAlign.Center)
                   .alignItems(VerticalAlign.Top)
-
                 }.height('46.7%')
                 .width('100%')
                 .backgroundColor('rgba(226, 226, 226, 0.3)')
                 .borderRadius(20)
-
               }.height('100%')
               .width('50%')
-
 
               Column() {
                 //湿度
@@ -816,7 +776,6 @@ struct routerIndex {
               .backgroundColor('rgba(226, 226, 226, 0.3)')
               .borderRadius(20)
               .justifyContent(FlexAlign.Start)
-
             }.height('100%')
             .width('100%')
             .justifyContent(FlexAlign.Center)
@@ -839,7 +798,6 @@ struct routerIndex {
                   Text(this.clothStr)
                     .fontSize(20)
                     .fontColor(Color.White)
-
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
@@ -854,7 +812,6 @@ struct routerIndex {
                   Text(this.SunStr)
                     .fontSize(20)
                     .fontColor(Color.White)
-
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
@@ -869,7 +826,6 @@ struct routerIndex {
                   Text(this.sportStr)
                     .fontSize(20)
                     .fontColor(Color.White)
-
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
@@ -884,7 +840,6 @@ struct routerIndex {
                   Text(this.weatherPoints?.daily[1].category + '洗车')
                     .fontSize(20)
                     .fontColor(Color.White)
-
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
@@ -899,7 +854,6 @@ struct routerIndex {
                   Text(this.weatherPoints?.daily[3].category + '钓鱼')
                     .fontSize(20)
                     .fontColor(Color.White)
-
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
@@ -914,14 +868,11 @@ struct routerIndex {
                   Text(this.weatherPoints?.daily[8].category + '感冒')
                     .fontSize(20)
                     .fontColor(Color.White)
-
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
-
               }
               .backgroundColor('rgba(226, 226, 226, 0.3)')
-
             }
             .columnsTemplate('1fr 1fr 1fr')
             .rowsTemplate('1fr 1fr ')
@@ -934,20 +885,20 @@ struct routerIndex {
           }.height(300)
           .width('95%')
           .margin({ left: '2.5%', bottom: 50 })
-
         }.backgroundColor(this.WeatherColor)
         .height('100%')
         .scrollBar(BarState.Off)
-
       }
     }
     .onRefreshing(() => {
       this.refreshingText = '正在刷新...'
+      this.aboutToAppear()
       setTimeout(() => {
-        this.aboutToAppear()
         this.refreshingText = '刷新完成！'
+      }, 2500)
+      setTimeout(() => {
         this.isRefreshing = false
-      }, 2000)
+      }, 3000)
       console.log('onRefreshing test')
     })
     .refreshOffset(64)

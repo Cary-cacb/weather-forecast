@@ -1,6 +1,5 @@
-import MmkvModel from './MMKVModel'
+import MmkvModel from '../Model/MMKVModel'
 import router from '@ohos.router'
-
 @Component
 export struct historyListItemViewModel {
   @Link locationList: string[]
@@ -18,6 +17,7 @@ export struct historyListItemViewModel {
               Text(value)
                 .fontSize(25)
                 .fontColor(Color.White)
+
               Text(this.weatherList[index])
                 .fontSize(18)
                 .fontColor(Color.White)
@@ -28,7 +28,6 @@ export struct historyListItemViewModel {
             Text(this.currWeatherList[index] + '°')
               .fontSize(45)
               .fontColor(Color.White)
-
           }
           .onClick(() => {
             router.replaceUrl({
@@ -47,16 +46,12 @@ export struct historyListItemViewModel {
         .margin({ bottom: 15 })
         .width('100%')
         .height(100)
-
-
         .swipeAction({
           end: {
             builder: () => this.historyItemBuilder(index),
             actionAreaDistance: 60
           }
-
         })
-
       })
     }.width('97%')
   }
@@ -66,7 +61,6 @@ export struct historyListItemViewModel {
     Button() {
       Image($r('app.media.delete_history'))
         .size({ width: 50, height: 50 })
-
         .onClick(() => {
           this.locationList.splice(index, 1)
           this.weatherList.splice(index, 1)
