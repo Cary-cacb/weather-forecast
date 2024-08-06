@@ -20,6 +20,11 @@ struct fifteenDaysWeather {
   private context_1: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings_1);
   private settings_2: RenderingContextSettings = new RenderingContextSettings(true);
   private context_2: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings_2);
+
+  aboutToAppear(): void {
+
+  }
+
   @State dailyWeather: dailyWeather | undefined = undefined
   @State heiWea: number[] = []
   @State lowWea: number[] = []
@@ -52,6 +57,7 @@ struct fifteenDaysWeather {
           .fontSize(30)
           .fontColor('#686868')
           .margin({ left: 15 })
+
       }
       .width('100%')
       .height(90)
@@ -69,14 +75,17 @@ struct fifteenDaysWeather {
                   Image($r(`app.media.${item.iconDay}`))
                     .size({ width: 35, height: 35 })
 
+
                   Text(item.textDay)
                     .fontSize(15)
                     .fontColor(Color.Black)
+
+
                 }.position({ x: 10 + 80 * index })
                 .justifyContent(FlexAlign.Center)
+
               })
             }
-<<<<<<< HEAD
 
             .height(90)
 
@@ -84,12 +93,6 @@ struct fifteenDaysWeather {
             Canvas(this.context_1)
               .height(110)
 
-=======
-            .height(90)
-
-            Canvas(this.context_1)
-              .height(110)
->>>>>>> V-1.5
               .width(1210)
               .onReady(() => {
                 let location: string = (router.getParams() as routerParams).mainCode
@@ -107,6 +110,8 @@ struct fifteenDaysWeather {
                       if (Number(daily.tempMax) < this.minT_H) {
                         this.minT_H = Number(daily.tempMax)
                       }
+
+
                     })
                     console.log('15日天气上下限' + this.maxT_L + '/' + this.maxT_H + '/' + this.minT_H + '/' +
                     this.minT_L)
@@ -115,7 +120,7 @@ struct fifteenDaysWeather {
                     this.context_1.fillStyle = Color.Black
                     this.context_1.strokeStyle = 'rgba(104, 104, 104, 0.5)'
                     this.context_1.font = '20vp sans-serif'
-                    this.context_1.moveTo(40,
+                    this.context_1.moveTo(37,
                       35 + (1 - (this.heiWea[0] - this.minT_H) / (this.maxT_H - this.minT_H)) * 70)
 
                     for (this.i = 0; this.i < 15; this.i++) {
@@ -125,10 +130,14 @@ struct fifteenDaysWeather {
                         35 + (1 - (this.heiWea[this.i] - this.minT_H) / (this.maxT_H - this.minT_H)) * 70)
                       this.context_1.arc(40 + 80 * this.i,
                         35 + (1 - (this.heiWea[this.i] - this.minT_H) / (this.maxT_H - this.minT_H)) * 70, 3, 0, 6.28)
+
                     }
                     this.context_1.stroke()
                   })
+
               })
+
+
           }.height('50%')
           .alignItems(HorizontalAlign.Start)
           .justifyContent(FlexAlign.End)
@@ -138,6 +147,7 @@ struct fifteenDaysWeather {
 
             Canvas(this.context_2)
               .height(110)
+
               .width(1200)
               .onReady(() => {
                 let location: string = (router.getParams() as routerParams).mainCode
@@ -175,9 +185,13 @@ struct fifteenDaysWeather {
                         35 + (1 - (this.lowWea[this.i] - this.minT_L) / (this.maxT_L - this.minT_L)) * 70)
                       this.context_2.arc(40 + 80 * this.i,
                         35 + (1 - (this.lowWea[this.i] - this.minT_L) / (this.maxT_L - this.minT_L)) * 70, 3, 0, 6.28)
+
                     }
                     this.context_2.stroke()
+
                   })
+
+
               })
             Row() {
               ForEach(this.dailyWeather?.daily, (item: daily, index) => {
@@ -185,26 +199,32 @@ struct fifteenDaysWeather {
                   Image($r(`app.media.${item.iconNight}`))
                     .size({ width: 35, height: 35 })
 
+
                   Text(item.textNight)
                     .fontSize(15)
                     .fontColor(Color.Black)
-
                   Text(`${item.windScaleDay.split('-')[1]}级`)
                     .fontSize(15)
                     .fontColor(Color.Black)
                     .size({ width: 25, height: 25 })
+
+
                 }.position({ x: 23 + 80 * index })
                 .justifyContent(FlexAlign.Center)
+
               })
             }
             .height(80)
+
           }.height('50%')
           .alignItems(HorizontalAlign.Start)
           .justifyContent(FlexAlign.Start)
         }.height('100%')
         .justifyContent(FlexAlign.Start)
+
       }.height(500)
       .scrollable(ScrollDirection.Horizontal)
+
     }.width('100%')
     .height('100% ')
     .justifyContent(FlexAlign.Start)
