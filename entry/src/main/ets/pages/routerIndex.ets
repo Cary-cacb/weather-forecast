@@ -55,23 +55,15 @@ struct routerIndex {
   @State code: string = (router.getParams() as routerParams).mainCode
   @State isRefreshing: boolean = false
   @State refreshingText: string = ''
+  @StorageLink('isNight') isNight: boolean = false
+  @State titleColor: string = 'rgba(0, 0, 0, 1)'
 
   aboutToAppear(): void {
     this.fiveMinutesRainList = []
-
-
     weatherModel.getWeatherPointsByHttp(this.code)
       .then(weatherPoints => {
         this.weatherPoints = weatherPoints
-        // if (Number(this.weatherPoints.daily[0].level) == 1) {
-        //   this.sportStr = '适宜户外运动'
-        // }
-        // if (Number(this.weatherPoints.daily[0].level) == 2) {
-        //   this.sportStr = '较适宜'
-        // }
-        // if (Number(this.weatherPoints.daily[0].level) == 3) {
-        //   this.sportStr = '适宜室内运动'
-        // }
+
         switch (Number(this.weatherPoints.daily[0].level)) {
           case 1:
             this.sportStr = '适宜户外运动';
@@ -149,15 +141,20 @@ struct routerIndex {
         } else {
           this.isRain = '两小时内无降雨'
         }
-        if (this.nowWea == '晴') {
-          this.WeatherColor = 'rgb(57,127,213)'
-
-        } else if (this.nowWea == '多云') {
-          this.WeatherColor = 'rgb(127,154,201)'
-        } else if (this.nowWea == '阴') {
-          this.WeatherColor = 'rgb(141,161,185)'
+        if (this.isNight == true) {
+          this.WeatherColor = 'rgba(0, 6, 41, 0.95)'
+          this.titleColor = 'rgba(255, 255, 255, 1)'
         } else {
-          this.WeatherColor = '#4c545c'
+          this.titleColor = 'rgba(0, 0, 0, 1)'
+          if (this.nowWea == '晴') {
+            this.WeatherColor = 'rgb(57,127,213)'
+          } else if (this.nowWea == '多云') {
+            this.WeatherColor = 'rgb(127,154,201)'
+          } else if (this.nowWea == '阴') {
+            this.WeatherColor = 'rgb(141,161,185)'
+          } else {
+            this.WeatherColor = '#4c545c'
+          }
         }
         console.log('现在背景色' + this.WeatherColor)
         console.log('现在天气' + this.nowWea)
@@ -218,8 +215,15 @@ struct routerIndex {
             })
           Text(this.title)
             .fontSize(35)
+            .fontColor(this.titleColor)
           Image($r('app.media.ic_more'))//app.media.ic_more
             .size({ width: 30, height: 30 })
+            .onClick(() => {
+              router.pushUrl({
+                url: 'pages/settingPage'
+              })
+            })
+
         }
         .height(60)
         .width('100%')
@@ -943,11 +947,13 @@ struct routerIndex {
     }
     .onRefreshing(() => {
       this.refreshingText = '正在刷新...'
+      this.aboutToAppear()
       setTimeout(() => {
-        this.aboutToAppear()
         this.refreshingText = '刷新完成！'
+      }, 2500)
+      setTimeout(() => {
         this.isRefreshing = false
-      }, 2000)
+      }, 3000)
       console.log('onRefreshing test')
     })
     .refreshOffset(64)

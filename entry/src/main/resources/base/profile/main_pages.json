@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/fifteenDaysWeather",
     "pages/searchPage",
-    "pages/routerIndex"
+    "pages/routerIndex",
+    "pages/settingPage"
   ]
 }
