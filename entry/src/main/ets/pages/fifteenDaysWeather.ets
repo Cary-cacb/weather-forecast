@@ -49,7 +49,7 @@ struct fifteenDaysWeather {
         })
       }.width('100%')
       .height(30)
-      .margin({ bottom: 5, top: 10, left: 10 })
+      .margin({ bottom: 5, top: 10, left: 15 })
 
       //表头
       Row() {
