@@ -88,13 +88,13 @@ struct fifteenDaysWeather {
               })
             }
 
-            .height(80)
+            .height(90)
 
 
             Canvas(this.context_1)
               .height(110)
 
-              .width(1200)
+              .width(1210)
               .onReady(() => {
                 let location: string = (router.getParams() as routerParams).mainCode
                 weatherModel.get15DayWeatherListByHttp(location)
@@ -121,15 +121,15 @@ struct fifteenDaysWeather {
                     this.context_1.fillStyle = Color.Black
                     this.context_1.strokeStyle = 'rgba(104, 104, 104, 0.5)'
                     this.context_1.font = '20vp sans-serif'
-                    this.context_1.moveTo(37,
+                    this.context_1.moveTo(40,
                       35 + (1 - (this.heiWea[0] - this.minT_H) / (this.maxT_H - this.minT_H)) * 70)
 
                     for (this.i = 0; this.i < 15; this.i++) {
-                      this.context_1.fillText(`${this.heiWea[this.i]}°`, 25 + 80 * this.i,
+                      this.context_1.fillText(`${this.heiWea[this.i]}°`, 30 + 80 * this.i,
                         20 + (1 - (this.heiWea[this.i] - this.minT_H) / (this.maxT_H - this.minT_H)) * 70)
-                      this.context_1.lineTo(37 + 80 * this.i,
+                      this.context_1.lineTo(40 + 80 * this.i,
                         35 + (1 - (this.heiWea[this.i] - this.minT_H) / (this.maxT_H - this.minT_H)) * 70)
-                      this.context_1.arc(37 + 80 * this.i,
+                      this.context_1.arc(40 + 80 * this.i,
                         35 + (1 - (this.heiWea[this.i] - this.minT_H) / (this.maxT_H - this.minT_H)) * 70, 3, 0, 6.28)
 
                     }
