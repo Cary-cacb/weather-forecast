@@ -422,7 +422,7 @@ struct Index {
             Column() {
               Row() {
                 Image($r(`app.media.${this.new3DWeather?.daily[0].iconDay}`))
-                  .size({ width: 20, height: 20 })
+                  .size({ width: 35, height: 35 })
                   .margin({ right: 15 })
                 Text('今天')
                   .fontSize(20)
@@ -432,12 +432,12 @@ struct Index {
                   Text(`${this.new3DWeather?.daily[0].textDay}转${this.new3DWeather?.daily[0].textNight}`)
                     .fontSize(20)
                     .fontColor(Color.White)
-                    .width(120)
+                    .width(110)
                 } else {
                   Text(`${this.new3DWeather?.daily[0].textDay}`)
                     .fontSize(20)
                     .fontColor(Color.White)
-                    .width(120)
+                    .width(110)
                 }
                 Text('良')
                   .fontSize(15)
@@ -446,7 +446,7 @@ struct Index {
                   .backgroundColor('rgba(171, 171, 171, 0.68)')
                   .borderRadius(10)
                   .textAlign(TextAlign.Center)
-                  .margin({ right: 45 })
+                  .margin({ right: 40 })
                 Text(`${this.new3DWeather?.daily[0].tempMax}°/${this.new3DWeather?.daily[0].tempMin}°`)
                   .fontSize(20)
                   .fontColor(Color.White)
@@ -458,7 +458,7 @@ struct Index {
 
               Row() {
                 Image($r(`app.media.${this.new3DWeather?.daily[1].iconDay}`))
-                  .size({ width: 20, height: 20 })
+                  .size({ width: 35, height: 35 })
                   .margin({ right: 15 })
 
                 Text('明天')
@@ -469,12 +469,12 @@ struct Index {
                   Text(`${this.new3DWeather?.daily[1].textDay}转${this.new3DWeather?.daily[1].textNight}`)
                     .fontSize(20)
                     .fontColor(Color.White)
-                    .width(120)
+                    .width(110)
                 } else {
                   Text(`${this.new3DWeather?.daily[1].textDay}`)
                     .fontSize(20)
                     .fontColor(Color.White)
-                    .width(120)
+                    .width(110)
                 }
                 // .backgroundColor(Color.Black)
                 Text('优')
@@ -484,7 +484,7 @@ struct Index {
                   .backgroundColor('rgba(171, 171, 171, 0.68)')
                   .borderRadius(10)
                   .textAlign(TextAlign.Center)
-                  .margin({ right: 45 })
+                  .margin({ right: 40 })
                 Text(`${this.new3DWeather?.daily[1].tempMax}°/${this.new3DWeather?.daily[1].tempMin}°`)
                   .fontSize(20)
                   .fontColor(Color.White)
@@ -495,7 +495,7 @@ struct Index {
 
               Row() {
                 Image($r(`app.media.${this.new3DWeather?.daily[2].iconDay}`))
-                  .size({ width: 20, height: 20 })
+                  .size({ width: 35, height: 35 })
                   .margin({ right: 15 })
                 Text('后天')
                   .fontSize(20)
@@ -505,12 +505,12 @@ struct Index {
                   Text(`${this.new3DWeather?.daily[2].textDay}转${this.new3DWeather?.daily[2].textNight}`)
                     .fontSize(20)
                     .fontColor(Color.White)
-                    .width(120)
+                    .width(110)
                 } else {
                   Text(`${this.new3DWeather?.daily[2].textDay}`)
                     .fontSize(20)
                     .fontColor(Color.White)
-                    .width(120)
+                    .width(110)
                 }
                 Text('良')
                   .fontSize(15)
@@ -519,7 +519,7 @@ struct Index {
                   .backgroundColor('rgba(171, 171, 171, 0.68)')
                   .borderRadius(10)
                   .textAlign(TextAlign.Center)
-                  .margin({ right: 45 })
+                  .margin({ right: 40 })
                 Text(`${this.new3DWeather?.daily[2].tempMax}°/${this.new3DWeather?.daily[2].tempMin}°`)
                   .fontSize(20)
                   .fontColor(Color.White)
@@ -559,7 +559,7 @@ struct Index {
           .width('95%')
           .margin({ left: '2.5%', bottom: 10 })
           .borderRadius(20)
-          .backgroundColor('rgba(226, 226, 226, 0.2)')
+          .backgroundColor('rgba(226, 226, 226, 0.3)')
 
           //24小时预报
           ListItem() {
@@ -644,7 +644,7 @@ struct Index {
                     ForEach(this.twentyFourHourWeatherList?.hourly, (item: hourly, index) => {
                       Column({ space: 10 }) {
                         Image($r(`app.media.${item.icon}`))
-                          .size({ width: 25, height: 25 })
+                          .size({ width: 35, height: 35 })
 
 
                         Text(`${item.windScale[2]}级`)
@@ -690,7 +690,7 @@ struct Index {
           .width('95%')
           .margin({ left: '2.5%', bottom: 10 })
           .borderRadius(20)
-          .backgroundColor('rgba(226, 226, 226, 0.2)') //'rgba(83, 83, 83, 0.6)'
+          .backgroundColor('rgba(226, 226, 226, 0.3)') //'rgba(83, 83, 83, 0.6)'
 
           //风力风向、日出日落、湿度、体感温度、能见度、气压
           ListItem() {
@@ -707,7 +707,7 @@ struct Index {
                 }
                 .height('50%')
                 .width('100%')
-                .backgroundColor('rgba(226, 226, 226, 0.2)')
+                .backgroundColor('rgba(226, 226, 226, 0.3)')
                 .borderRadius(20)
                 .justifyContent(FlexAlign.Center)
 
@@ -746,7 +746,7 @@ struct Index {
 
                 }.height('46.7%')
                 .width('100%')
-                .backgroundColor('rgba(226, 226, 226, 0.2)')
+                .backgroundColor('rgba(226, 226, 226, 0.3)')
                 .borderRadius(20)
 
               }.height('100%')
@@ -850,7 +850,7 @@ struct Index {
               }
               .height('100%')
               .width('46.9%')
-              .backgroundColor('rgba(226, 226, 226, 0.2)')
+              .backgroundColor('rgba(226, 226, 226, 0.3)')
               .borderRadius(20)
               .justifyContent(FlexAlign.Start)
 
@@ -880,7 +880,7 @@ struct Index {
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
-              }.backgroundColor('rgba(226, 226, 226, 0.2)')
+              }.backgroundColor('rgba(226, 226, 226, 0.3)')
 
               //防晒指数
               GridItem() {
@@ -895,7 +895,7 @@ struct Index {
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
-              }.backgroundColor('rgba(226, 226, 226, 0.2)')
+              }.backgroundColor('rgba(226, 226, 226, 0.3)')
 
               //运动指数
               GridItem() {
@@ -910,7 +910,7 @@ struct Index {
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
-              }.backgroundColor('rgba(226, 226, 226, 0.2)')
+              }.backgroundColor('rgba(226, 226, 226, 0.3)')
 
               //洗车指数
               GridItem() {
@@ -925,7 +925,7 @@ struct Index {
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
-              }.backgroundColor('rgba(226, 226, 226, 0.2)')
+              }.backgroundColor('rgba(226, 226, 226, 0.3)')
 
               //钓鱼指数
               GridItem() {
@@ -940,7 +940,7 @@ struct Index {
                 }.size({ width: '100%', height: '100%' })
                 .alignItems(HorizontalAlign.Center)
                 .justifyContent(FlexAlign.Center)
-              }.backgroundColor('rgba(226, 226, 226, 0.2)')
+              }.backgroundColor('rgba(226, 226, 226, 0.3)')
 
               //感冒指数
               GridItem() {
@@ -957,7 +957,7 @@ struct Index {
                 .justifyContent(FlexAlign.Center)
 
               }
-              .backgroundColor('rgba(226, 226, 226, 0.2)')
+              .backgroundColor('rgba(226, 226, 226, 0.3)')
 
             }
             .columnsTemplate('1fr 1fr 1fr')
