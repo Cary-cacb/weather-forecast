@@ -1,10 +1,9 @@
-import MmkvModel from './ViewModel/MMKVModel'
+import MmkvModel from './Model/MMKVModel'
 import router from '@ohos.router'
-import weatherModel from './ViewModel/HTTPModel';
+import weatherModel from './Model/HTTPModel';
 import { possion } from './entity/Possion';
 import { location } from './entity/location';
 import { historyListItemViewModel } from './ViewModel/historyListViewModel';
-
 
 class routerParams {
   mainCode: string
@@ -22,25 +21,19 @@ struct search {
     this.codeSet.forEach((val, index) => {
       if (val == '') {
         this.codeSet.splice(index, 1)
-      } else {
       }
     })
     this.codeSet.forEach(val => {
       this.locationSet.push(JSON.parse(val))
     })
     this.locationSet.forEach(async (value, number) => {
-
       let curWea = await weatherModel.getCurrWeatherListByHttp(value.id)
-
       this.currWeatherList.push(curWea.now.temp)
-
-
       let dailyWea = await weatherModel.get3DayWeatherListByHttp(value.id)
       this.weatherList.push(`${dailyWea.daily[0].tempMax}°/${dailyWea.daily[0].tempMin}°`)
       this.mainCodeList.push(value.id)
       this.locationList.push(value.name)
     })
-
   }
 
   @State codeSet: string[] = []
@@ -60,11 +53,7 @@ struct search {
         Image($r('app.media.back'))
           .size({ width: 30, height: 30 })
           .onClick(() => {
-            console.log('被点击 返回')
-            router.replaceUrl({
-              url: 'pages/routerIndex',
-              params: { mainCode: this.mainCode }
-            })
+            router.back()
 
           })
           .margin({ left: 20 })

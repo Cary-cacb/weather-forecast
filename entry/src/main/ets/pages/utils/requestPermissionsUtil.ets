@@ -1,6 +1,5 @@
 import { abilityAccessCtrl, common, Permissions } from '@kit.AbilityKit';
 import { BusinessError } from '@kit.BasicServicesKit';
-
 const permissions: Array<Permissions> = ['ohos.permission.MICROPHONE'];
 // 使用UIExtensionAbility：将common.UIAbilityContext 替换为common.UIExtensionContext
 export function reqPermissionsFromUser(permissions: Array<Permissions>, context: common.UIAbilityContext): void {
