@@ -3,6 +3,7 @@ import router from '@ohos.router'
 import weatherModel from './ViewModel/HTTPModel';
 import { possion } from './entity/Possion';
 import { location } from './entity/location';
+import { historyListItemViewModel } from './ViewModel/historyListViewModel';
 
 
 class routerParams {
@@ -16,15 +17,28 @@ class routerParams {
 @Entry
 @Component
 struct search {
-  aboutToAppear(): void {
+  aboutToAppear() {
     this.codeSet = MmkvModel.getCodes()
     this.codeSet.forEach((val, index) => {
       if (val == '') {
         this.codeSet.splice(index, 1)
+      } else {
       }
     })
     this.codeSet.forEach(val => {
       this.locationSet.push(JSON.parse(val))
+    })
+    this.locationSet.forEach(async (value, number) => {
+
+      let curWea = await weatherModel.getCurrWeatherListByHttp(value.id)
+
+      this.currWeatherList.push(curWea.now.temp)
+
+
+      let dailyWea = await weatherModel.get3DayWeatherListByHttp(value.id)
+      this.weatherList.push(`${dailyWea.daily[0].tempMax}°/${dailyWea.daily[0].tempMin}°`)
+      this.mainCodeList.push(value.id)
+      this.locationList.push(value.name)
     })
 
   }
@@ -34,6 +48,11 @@ struct search {
   @State possion: possion | undefined = undefined
   @State isNull: number = 1
   @State locationSet: location[] = []
+  //传入历史记录列表对象VM使用
+  @State locationList: string[] = []
+  @State weatherList: string[] = []
+  @State currWeatherList: string[] = []
+  @State mainCodeList: string[] = []
 
   build() {
     Column() {
@@ -103,7 +122,14 @@ struct search {
 
             }.width('98%')
             .onClick(() => {
-              this.codeSet.unshift(JSON.stringify(value))
+              if (this.codeSet.length < 3) {
+                this.codeSet.unshift(JSON.stringify(value))
+              } else {
+                this.codeSet.unshift(JSON.stringify(value))
+                this.codeSet.pop()
+
+
+              }
               MmkvModel.setCodes(this.codeSet)
               router.replaceUrl({
                 url: 'pages/routerIndex',
@@ -122,39 +148,13 @@ struct search {
       .padding({ top: 5, bottom: 5 })
       .justifyContent(FlexAlign.Start)
 
-      List() {
-        ForEach(this.locationSet, (value: location, index: number) => {
-
-          ListItem() {
-            Column() {
-              Text(value.name)
-                .fontSize(40)
-              Divider()
-                .strokeWidth(2)
-            }
-            .alignItems(HorizontalAlign.Start)
-            .width('100%')
-            .height(60)
-            .onClick(() => {
-              console.log('历史纪录被点击！')
-              router.replaceUrl({
-                url: 'pages/routerIndex',
-                params: { mainCode: value.id }
-              })
-            })
-          }.width('100%')
-          .height(60)
-          .swipeAction({
-            end: {
-              builder: () => this.historyItemBuilder(index),
-              actionAreaDistance: 60
-            }
-
-          })
-
-        })
-      }.width('100%')
-      .height(60 * this.codeSet.length)
+      historyListItemViewModel({
+        locationList: this.locationList,
+        weatherList: this.weatherList,
+        currWeatherList: this.currWeatherList,
+        codeSet: this.codeSet,
+        mainCodeList: this.mainCodeList
+      })
 
       Row() {
         Image($r('app.media.delete'))
