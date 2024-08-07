@@ -20,7 +20,7 @@ class HTTPModel {
         `${this.baseURL}/now`,
         {
           method: http.RequestMethod.GET,
-          extraData: { "key": '109a679915a140938b288413bac3df3a', 'location': `${location}` }
+          extraData: { "key": '26e5f5ab269b45b18579228a1c5cd1a3', 'location': `${location}` }
         }
       )
         .then(resp => {
@@ -47,7 +47,7 @@ class HTTPModel {
         `${this.baseURL}/3d`,
         {
           method: http.RequestMethod.GET,
-          extraData: { "key": '109a679915a140938b288413bac3df3a', 'location': `${location}` }
+          extraData: { "key": '26e5f5ab269b45b18579228a1c5cd1a3', 'location': `${location}` }
         }
       )
         .then(resp => {
@@ -74,7 +74,7 @@ class HTTPModel {
         `${this.baseURL}/15d`,
         {
           method: http.RequestMethod.GET,
-          extraData: { "key": '109a679915a140938b288413bac3df3a', 'location': `${location}` }
+          extraData: { "key": '26e5f5ab269b45b18579228a1c5cd1a3', 'location': `${location}` }
         }
       )
         .then(resp => {
@@ -101,7 +101,7 @@ class HTTPModel {
         `https://geoapi.qweather.com/v2/city/lookup`,
         {
           method: http.RequestMethod.GET,
-          extraData: { "key": '109a679915a140938b288413bac3df3a', 'location': `${location}` }
+          extraData: { "key": '26e5f5ab269b45b18579228a1c5cd1a3', 'location': `${location}` }
         }
       )
         .then(resp => {
@@ -128,7 +128,7 @@ class HTTPModel {
         `https://api.qweather.com/airquality/v1/now/${location}`,
         {
           method: http.RequestMethod.GET,
-          extraData: { "key": '109a679915a140938b288413bac3df3a' }
+          extraData: { "key": '26e5f5ab269b45b18579228a1c5cd1a3' }
         }
       )
         .then(resp => {
@@ -156,7 +156,7 @@ class HTTPModel {
         `https://api.qweather.com/v7/minutely/5m`,
         {
           method: http.RequestMethod.GET,
-          extraData: { "key": '109a679915a140938b288413bac3df3a', 'location': location }
+          extraData: { "key": '26e5f5ab269b45b18579228a1c5cd1a3', 'location': location }
         }
       )
         .then(resp => {
@@ -183,7 +183,7 @@ class HTTPModel {
         `https://api.qweather.com/v7/weather/24h`,
         {
           method: http.RequestMethod.GET,
-          extraData: { "key": '109a679915a140938b288413bac3df3a', 'location': `${location}` }
+          extraData: { "key": '26e5f5ab269b45b18579228a1c5cd1a3', 'location': `${location}` }
         }
       )
         .then(resp => {
@@ -210,7 +210,7 @@ class HTTPModel {
         `https://api.qweather.com/v7/indices/3d`,
         {
           method: http.RequestMethod.GET,
-          extraData: { type: '0', "key": '109a679915a140938b288413bac3df3a', 'location': `${location}` }
+          extraData: { type: '0', "key": '26e5f5ab269b45b18579228a1c5cd1a3', 'location': `${location}` }
         }
       )
         .then(resp => {

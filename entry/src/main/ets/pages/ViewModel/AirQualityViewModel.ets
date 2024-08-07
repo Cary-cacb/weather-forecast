@@ -441,7 +441,7 @@ export struct airQuality {
           .fontSize(18)
           .fontWeight(FontWeight.Normal)
           .margin({ right: 10 })
-        Text(`紫外线指数: ${this.weatherPoints?.daily[4].level}`)
+        Text(`紫外线指数: ${this.weatherPoints?.daily[15].level}`)
           .fontColor(Color.White)
           .fontSize(18)
           .fontWeight(FontWeight.Normal)
@@ -461,7 +461,7 @@ export struct airQuality {
       .justifyContent(FlexAlign.Start)
 
       Row() {
-        Text(this.weatherPoints?.daily[4].text)
+        Text(this.weatherPoints?.daily[15].text)
           .fontSize(16)
           .fontColor(Color.White)
       }.height(16)
@@ -475,7 +475,7 @@ export struct airQuality {
           Text('今天')
             .fontColor(Color.White)
             .fontSize(20)
-          Text(`紫外线${this.weatherPoints?.daily[4].category}`)
+          Text(`紫外线${this.weatherPoints?.daily[15].category}`)
             .fontColor(Color.White)
             .fontSize(16)
           Image($r('app.media.sunshine'))
@@ -489,7 +489,7 @@ export struct airQuality {
           Text('明天')
             .fontColor(Color.White)
             .fontSize(20)
-          Text(`紫外线${this.weatherPoints?.daily[20].category}`)
+          Text(`紫外线${this.weatherPoints?.daily[31].category}`)
             .fontColor(Color.White)
             .fontSize(16)
           Image($r('app.media.sunshine'))
@@ -503,7 +503,7 @@ export struct airQuality {
           Text('后天')
             .fontColor(Color.White)
             .fontSize(20)
-          Text(`紫外线${this.weatherPoints?.daily[36].category}`)
+          Text(`紫外线${this.weatherPoints?.daily[47].category}`)
             .fontColor(Color.White)
             .fontSize(16)
           Image($r('app.media.sunshine'))
@@ -514,7 +514,6 @@ export struct airQuality {
         }.justifyContent(FlexAlign.Center)
       }.width('90%')
       .justifyContent(FlexAlign.SpaceBetween)
-
     }
   }
 
