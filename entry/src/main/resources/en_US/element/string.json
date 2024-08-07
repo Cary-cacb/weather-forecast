@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "key_weather",
+      "value": "26e5f5ab269b45b18579228a1c5cd1a3"
     }
   ]
 }

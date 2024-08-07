@@ -15,6 +15,10 @@
     {
       "name": "reason_location",
       "value": "用于获取地理位置"
+    },
+    {
+      "name": "key_weather",
+      "value": "26e5f5ab269b45b18579228a1c5cd1a3"
     }
   ]
 }
