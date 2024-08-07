@@ -207,7 +207,7 @@ class HTTPModel {
 
       //发送http请求
       httpRequest.request(
-        `https://api.qweather.com/v7/indices/1d`,
+        `https://api.qweather.com/v7/indices/3d`,
         {
           method: http.RequestMethod.GET,
           extraData: { type: '0', "key": '109a679915a140938b288413bac3df3a', 'location': `${location}` }

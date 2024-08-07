@@ -193,7 +193,14 @@ struct Index {
           currWeatherGridViewModel({ currWeather: this.currWeather, new3DWeather: this.new3DWeather })
 
           //天气指数
-          airQuality({ latitude: this.latitude, longitude: this.longitude })
+          airQuality({
+            latitude: this.latitude,
+            longitude: this.longitude,
+            currWeather: this.currWeather,
+            new3DWeather: this.new3DWeather,
+            WeatherColor: this.WeatherColor,
+            airQuality:this.airQuality
+          })
         }
         .backgroundColor(this.WeatherColor)
         .height('100%')
@@ -213,6 +220,7 @@ struct Index {
     .refreshOffset(64)
     .pullToRefresh(true)
     .width('100%')
+
   }
 
   @Builder
