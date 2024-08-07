@@ -820,7 +820,7 @@ export struct airQuality {
       .justifyContent(FlexAlign.Start)
 
       Row() {
-        Text(this.weatherPoints?.daily[3].text)
+        Text(this.weatherPoints?.daily[8].text)
           .fontSize(16)
           .fontColor(Color.White)
       }.height(16)
