@@ -1,9 +1,11 @@
-import MmkvModel from './Model/MMKVModel'
 import router from '@ohos.router'
 import weatherModel from './Model/HTTPModel';
 import { possion } from './entity/Possion';
 import { location } from './entity/location';
 import { historyListItemViewModel } from './ViewModel/historyListViewModel';
+import { CurrWeather } from './entity/currWeather';
+import { dailyWeather } from './entity/dailyWeather';
+import DatabaseUtil from './utils/sqlLiteUtil';
 
 class routerParams {
   mainCode: string
@@ -17,23 +19,41 @@ class routerParams {
 @Component
 struct search {
   aboutToAppear() {
-    this.codeSet = MmkvModel.getCodes()
-    this.codeSet.forEach((val, index) => {
-      if (val == '') {
-        this.codeSet.splice(index, 1)
-      }
-    })
-    this.codeSet.forEach(val => {
-      this.locationSet.push(JSON.parse(val))
-    })
-    this.locationSet.forEach(async (value, number) => {
-      let curWea = await weatherModel.getCurrWeatherListByHttp(value.id)
-      this.currWeatherList.push(curWea.now.temp)
-      let dailyWea = await weatherModel.get3DayWeatherListByHttp(value.id)
-      this.weatherList.push(`${dailyWea.daily[0].tempMax}°/${dailyWea.daily[0].tempMin}°`)
-      this.mainCodeList.push(value.id)
-      this.locationList.push(value.name)
-    })
+    DatabaseUtil.getAllHistory()
+      .then((val: string[]) => {
+        this.codeSet = val
+        console.log('查询val' + val.toString())
+        console.log('查询codeSet' + this.codeSet.toString())
+
+        this.codeSet.forEach((val, index) => {
+          if (val == '') {
+            this.codeSet.splice(index, 1)
+          }
+        })
+        this.codeSet.forEach(val => {
+          this.locationSet.push(JSON.parse(val))
+        })
+        this.locationSet.forEach((value, number) => {
+          weatherModel.getCurrWeatherListByHttp(value.id)
+            .then((value: CurrWeather) => {
+
+              this.currWeatherList[number] = value.now.temp
+            })
+
+          weatherModel.get3DayWeatherListByHttp(value.id)
+            .then((value: dailyWeather) => {
+              this.weatherList[number] = (`${value.daily[0].tempMax}°/${value.daily[0].tempMin}°`)
+            })
+          this.mainCodeList.push(value.id)
+          this.locationList.push(value.name)
+
+        })
+        console.log('111' + JSON.stringify(this.currWeatherList))
+        console.log('111' + JSON.stringify(this.weatherList))
+        console.log('111' + JSON.stringify(this.locationList))
+      })
+
+
   }
 
   @State codeSet: string[] = []
@@ -117,9 +137,13 @@ struct search {
                 this.codeSet.unshift(JSON.stringify(value))
                 this.codeSet.pop()
 
-
               }
-              MmkvModel.setCodes(this.codeSet)
+              DatabaseUtil.deleteAllHistory()
+              this.codeSet.forEach((val) => {
+                console.log('查询返回数值' + val)
+                DatabaseUtil.addHistory(val)
+
+              })
               router.replaceUrl({
                 url: 'pages/routerIndex',
                 params: { mainCode: value.id }
@@ -137,13 +161,15 @@ struct search {
       .padding({ top: 5, bottom: 5 })
       .justifyContent(FlexAlign.Start)
 
-      historyListItemViewModel({
-        locationList: this.locationList,
-        weatherList: this.weatherList,
-        currWeatherList: this.currWeatherList,
-        codeSet: this.codeSet,
-        mainCodeList: this.mainCodeList
-      })
+      if (this.codeSet.length != 0) {
+        historyListItemViewModel({
+          locationList: this.locationList,
+          weatherList: this.weatherList,
+          currWeatherList: this.currWeatherList,
+          codeSet: this.codeSet,
+          mainCodeList: this.mainCodeList
+        })
+      }
 
       Row() {
         Image($r('app.media.delete'))
@@ -155,7 +181,7 @@ struct search {
       .justifyContent(FlexAlign.Center)
       .onClick(() => {
         this.codeSet = []
-        MmkvModel.setCodes(this.codeSet)
+        DatabaseUtil.deleteAllHistory()
       })
     }
     .width('100%')
@@ -171,7 +197,6 @@ struct search {
         .onClick(() => {
           this.locationSet.splice(index, 1)
           this.codeSet.splice(index, 1)
-          MmkvModel.setCodes(this.codeSet)
         })
     }
     .backgroundColor(Color.Transparent)
