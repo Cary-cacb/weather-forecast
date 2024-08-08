@@ -12,6 +12,7 @@ import { currWeatherViewModel } from './ViewModel/currWeatherViewModel';
 import { twentyFourHourWeatherViewModel } from './ViewModel/twentyFourHourWeatherViewModel';
 import { currWeatherGridViewModel } from './ViewModel/currWeatherGridViewModel';
 import { airQuality } from './ViewModel/AirQualityViewModel';
+import { JSON } from '@kit.ArkTS';
 
 const permissions: Array<Permissions> = ['ohos.permission.LOCATION', 'ohos.permission.APPROXIMATELY_LOCATION'];
 
@@ -147,6 +148,9 @@ struct Index {
   build() {
     Refresh({ refreshing: $$this.isRefreshing, builder: this.refreshItemBuilder }) {
       Column() {
+        Blank()
+          .height(30)
+          .backgroundColor(this.WeatherColor)
         titleViewModel({
           WeatherColor: this.WeatherColor,
           locationNum: this.locationNum,
@@ -199,14 +203,22 @@ struct Index {
             currWeather: this.currWeather,
             new3DWeather: this.new3DWeather,
             WeatherColor: this.WeatherColor,
-            airQuality:this.airQuality
+            airQuality: this.airQuality
           })
+
+          ListItem() {
+            Column() {
+              Blank().height(80)
+            }
+          }
         }
         .backgroundColor(this.WeatherColor)
-        .height('100%')
         .scrollBar(BarState.Off)
+
       }
     }
+
+
     .onRefreshing(() => {
       this.refreshingText = '正在刷新...'
       this.aboutToAppear()

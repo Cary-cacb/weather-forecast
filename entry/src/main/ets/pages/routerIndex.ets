@@ -251,7 +251,7 @@ struct routerIndex {
             this.WeatherColor = '#4c545c'
           }
         }
-
+        AppStorage.setOrCreate('wc', this.WeatherColor)
         weatherModel.getAirQualityListByHttp(this.code)
           .then(val => {
             this.airQuality = Number(val.aqi[0].value)
@@ -285,6 +285,9 @@ struct routerIndex {
   build() {
     Refresh({ refreshing: $$this.isRefreshing, builder: this.refreshItemBuilder }) {
       Column() {
+        Blank()
+          .height(30)
+          .backgroundColor(this.WeatherColor)
         //标题栏
         Row() {
           Image($r('app.media.add'))
@@ -913,7 +916,8 @@ struct routerIndex {
                 this.isShow1 = true
               })
               .bindSheet($$this.isShow1, this.clothBindSheetBuilder(), {
-                height: '60%',
+                detents: ['60%', '60%', 200],
+                dragBar: true,
                 backgroundColor: this.WeatherColor,
                 showClose: false
               })
@@ -935,7 +939,8 @@ struct routerIndex {
                 this.isShow2 = true
               })
               .bindSheet($$this.isShow2, this.sunBindSheetBuilder(), {
-                height: '60%',
+                detents: ['60%', '60%', 200],
+                dragBar: true,
                 backgroundColor: this.WeatherColor,
                 showClose: false
               })
@@ -957,7 +962,8 @@ struct routerIndex {
                 this.isShow3 = true
               })
               .bindSheet($$this.isShow3, this.sportBindSheetBuilder(), {
-                height: '60%',
+                detents: ['60%', '60%', 200],
+                dragBar: true,
                 backgroundColor: this.WeatherColor,
                 showClose: false
               })
@@ -979,7 +985,8 @@ struct routerIndex {
                 this.isShow4 = true
               })
               .bindSheet($$this.isShow4, this.washBindSheetBuilder(), {
-                height: '60%',
+                detents: ['60%', '60%', 200],
+                dragBar: true,
                 backgroundColor: this.WeatherColor,
                 showClose: false
               })
@@ -1001,7 +1008,8 @@ struct routerIndex {
                 this.isShow5 = true
               })
               .bindSheet($$this.isShow5, this.fishingBindSheetBuilder(), {
-                height: '60%',
+                detents: ['60%', '60%', 200],
+                dragBar: true,
                 backgroundColor: this.WeatherColor,
                 showClose: false
               })
@@ -1024,7 +1032,8 @@ struct routerIndex {
                 this.isShow6 = true
               })
               .bindSheet($$this.isShow6, this.coldBindSheetBuilder(), {
-                height: '60%',
+                detents: ['60%', '60%', 200],
+                dragBar: true,
                 backgroundColor: this.WeatherColor,
                 showClose: false
               })
@@ -1040,6 +1049,12 @@ struct routerIndex {
           }.height(300)
           .width('95%')
           .margin({ left: '2.5%', bottom: 50 })
+
+          ListItem() {
+            Column() {
+              Blank().height(80)
+            }
+          }
         }.backgroundColor(this.WeatherColor)
         .height('100%')
         .scrollBar(BarState.Off)

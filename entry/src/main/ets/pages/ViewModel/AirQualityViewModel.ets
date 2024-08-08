@@ -206,7 +206,8 @@ export struct airQuality {
           this.isShow1 = true
         })
         .bindSheet($$this.isShow1, this.clothBindSheetBuilder(), {
-          height: '60%',
+          detents: ['60%', '60%', 200],
+          dragBar: true,
           backgroundColor: this.WeatherColor,
           showClose: false
         })
@@ -229,7 +230,8 @@ export struct airQuality {
           this.isShow2 = true
         })
         .bindSheet($$this.isShow2, this.sunBindSheetBuilder(), {
-          height: '60%',
+          detents: ['60%', '60%', 200],
+          dragBar: true,
           backgroundColor: this.WeatherColor,
           showClose: false
         })
@@ -252,9 +254,11 @@ export struct airQuality {
           this.isShow3 = true
         })
         .bindSheet($$this.isShow3, this.sportBindSheetBuilder(), {
-          height: '60%',
+          detents: ['60%', '60%', 200],
+          dragBar: true,
           backgroundColor: this.WeatherColor,
           showClose: false
+
         })
 
         //洗车指数
@@ -275,7 +279,8 @@ export struct airQuality {
           this.isShow4 = true
         })
         .bindSheet($$this.isShow4, this.washBindSheetBuilder(), {
-          height: '60%',
+          detents: ['60%', '60%', 200],
+          dragBar: true,
           backgroundColor: this.WeatherColor,
           showClose: false
         })
@@ -299,7 +304,8 @@ export struct airQuality {
           this.isShow5 = true
         })
         .bindSheet($$this.isShow5, this.fishingBindSheetBuilder(), {
-          height: '60%',
+          detents: ['60%', '60%', 200],
+          dragBar: true,
           backgroundColor: this.WeatherColor,
           showClose: false
         })
@@ -325,7 +331,8 @@ export struct airQuality {
           this.isShow6 = true
         })
         .bindSheet($$this.isShow6, this.coldBindSheetBuilder(), {
-          height: '60%',
+          detents: ['60%', '60%', 200],
+          dragBar: true,
           backgroundColor: this.WeatherColor,
           showClose: false
         })
