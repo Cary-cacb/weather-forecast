@@ -69,6 +69,8 @@ struct search {
 
   build() {
     Column() {
+      Blank()
+        .height(30)
       Row() {
         Image($r('app.media.back'))
           .size({ width: 30, height: 30 })

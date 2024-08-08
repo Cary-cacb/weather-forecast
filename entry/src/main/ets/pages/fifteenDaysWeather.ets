@@ -32,6 +32,9 @@ struct fifteenDaysWeather {
 
   build() {
     Column() {
+      Blank()
+        .height(20)
+        
       //返回按钮
       Row() {
         Button() {
