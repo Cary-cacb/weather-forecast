@@ -1,8 +1,8 @@
 import { geoLocationManager } from '@kit.LocationKit'
-import { twentyFourHourWeather } from '../entity/twentyFourHourWeather'
-import weatherModel from '../Model/HTTPModel'
+import { twentyFourHourWeather } from '../../entity/twentyFourHourWeather'
+import weatherModel from '../../Model/HTTPModel'
 import { BusinessError } from '@kit.BasicServicesKit'
-import { hourly } from '../entity/hourly'
+import { hourly } from '../../entity/hourly'
 
 @Component
 export struct twentyFourHourWeatherViewModel {

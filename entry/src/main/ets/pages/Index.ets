@@ -5,13 +5,13 @@ import weatherModel from './Model/HTTPModel'
 import { CurrWeather } from './entity/currWeather'
 import { dailyWeather } from './entity/dailyWeather';
 import regExpUtil from './utils/RegExpUtil'
-import { rainBarChartViewModel } from './ViewModel/rainBarChartViewModel';
-import { dailyWeatherViewModel } from './ViewModel/dailyWeatherViewModel';
-import { titleViewModel } from './ViewModel/titleCViewModel';
-import { currWeatherViewModel } from './ViewModel/currWeatherViewModel';
-import { twentyFourHourWeatherViewModel } from './ViewModel/twentyFourHourWeatherViewModel';
-import { currWeatherGridViewModel } from './ViewModel/currWeatherGridViewModel';
-import { airQuality } from './ViewModel/AirQualityViewModel';
+import { rainBarChartViewModel } from './ViewModel/index/rainBarChartViewModel';
+import { dailyWeatherViewModel } from './ViewModel/index/dailyWeatherViewModel';
+import { titleViewModel } from './ViewModel/index/titleCViewModel';
+import { currWeatherViewModel } from './ViewModel/index/currWeatherViewModel';
+import { twentyFourHourWeatherViewModel } from './ViewModel/index/twentyFourHourWeatherViewModel';
+import { currWeatherGridViewModel } from './ViewModel/index/currWeatherGridViewModel';
+import { airQuality } from './ViewModel/index/AirQualityViewModel';
 import { JSON } from '@kit.ArkTS';
 
 const permissions: Array<Permissions> = ['ohos.permission.LOCATION', 'ohos.permission.APPROXIMATELY_LOCATION'];

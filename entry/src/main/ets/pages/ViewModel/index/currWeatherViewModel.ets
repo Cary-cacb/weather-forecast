@@ -1,4 +1,4 @@
-import { CurrWeather } from '../entity/currWeather'
+import { CurrWeather } from '../../entity/currWeather'
 
 @Component
 export struct currWeatherViewModel{

@@ -1,6 +1,7 @@
 import { geoLocationManager } from '@kit.LocationKit';
-import weatherModel from '../Model/HTTPModel';
+import weatherModel from '../../Model/HTTPModel';
 import { BusinessError } from '@kit.BasicServicesKit';
+
 @Component
 export struct rainBarChartViewModel {
   private settings: RenderingContextSettings = new RenderingContextSettings(true);

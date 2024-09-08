@@ -2,7 +2,7 @@ import router from '@ohos.router'
 import weatherModel from './Model/HTTPModel';
 import { possion } from './entity/Possion';
 import { location } from './entity/location';
-import { historyListItemViewModel } from './ViewModel/historyListViewModel';
+import { historyListItemViewModel } from './ViewModel/index/historyListViewModel';
 import { CurrWeather } from './entity/currWeather';
 import { dailyWeather } from './entity/dailyWeather';
 import DatabaseUtil from './utils/sqlLiteUtil';
@@ -75,7 +75,13 @@ struct search {
         Image($r('app.media.back'))
           .size({ width: 30, height: 30 })
           .onClick(() => {
-            router.back()
+            if (this.codeSet.length == 0) {
+              router.pushUrl({
+                url: 'pages/Index'
+              })
+            } else {
+              router.back()
+            }
 
           })
           .margin({ left: 20 })
@@ -188,6 +194,7 @@ struct search {
     }
     .width('100%')
     .height('100%')
+
   }
 
   @Builder

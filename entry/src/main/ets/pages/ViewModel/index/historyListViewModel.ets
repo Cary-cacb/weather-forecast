@@ -1,4 +1,4 @@
-import DatabaseUtil from '../utils/sqlLiteUtil';
+import DatabaseUtil from '../../utils/sqlLiteUtil';
 import router from '@ohos.router'
 
 @Component

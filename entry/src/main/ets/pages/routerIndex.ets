@@ -8,9 +8,7 @@ import { twentyFourHourWeather } from './entity/twentyFourHourWeather';
 import { hourly } from './entity/hourly';
 import { weatherPoints } from './entity/weatherPoints';
 import router from '@ohos.router';
-import { titleViewModel } from './ViewModel/titleCViewModel';
-import { currWeatherViewModel } from './ViewModel/currWeatherViewModel';
-import { rainBarChartViewModel } from './ViewModel/rainBarChartViewModel';
+
 
 const permissions: Array<Permissions> = ['ohos.permission.LOCATION', 'ohos.permission.APPROXIMATELY_LOCATION'];
 

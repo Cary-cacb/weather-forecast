@@ -1,7 +1,7 @@
-import { CurrWeather } from '../entity/currWeather'
-import { dailyWeather } from '../entity/dailyWeather'
-import { weatherPoints } from '../entity/weatherPoints'
-import weatherModel from '../Model/HTTPModel'
+import { CurrWeather } from '../../entity/currWeather'
+import { dailyWeather } from '../../entity/dailyWeather'
+import { weatherPoints } from '../../entity/weatherPoints'
+import weatherModel from '../../Model/HTTPModel'
 
 @Component
 export struct airQuality {

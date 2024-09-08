@@ -1,5 +1,5 @@
 import { router } from '@kit.ArkUI'
-import { dailyWeather } from '../entity/dailyWeather'
+import { dailyWeather } from '../../entity/dailyWeather'
 
 @Component
 export struct dailyWeatherViewModel {

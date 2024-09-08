@@ -1,5 +1,6 @@
-import { CurrWeather } from '../entity/currWeather'
-import { dailyWeather } from '../entity/dailyWeather'
+import { CurrWeather } from '../../entity/currWeather'
+import { dailyWeather } from '../../entity/dailyWeather'
+
 @Component
 export struct currWeatherGridViewModel {
   @Link currWeather: CurrWeather
